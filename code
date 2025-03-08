@@ -1,0 +1,186 @@
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Formatter;
+import java.util.List;
+import java.util.Scanner;
+
+class MedicalCenterApplication {
+    public static void main(String[] args) {
+        System.out.println("Medical Center System is Running...");
+        Scanner scanner = new Scanner(System.in);
+        MedicineManager medicineManager = new MedicineManager();
+        PrescriptionManager prescriptionManager = new PrescriptionManager();
+        UserManager userManager = new UserManager();
+
+        while (true) {
+            System.out.println("\n1. Add Medicine");
+            System.out.println("2. View Medicines");
+            System.out.println("3. Add Prescription");
+            System.out.println("4. View Prescriptions");
+            System.out.println("5. Register User");
+            System.out.println("6. View Users");
+            System.out.println("7. Exit");
+            System.out.print("Enter choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); 
+
+            switch (choice) {
+                case 1:
+                    medicineManager.addMedicine(scanner);
+                    break;
+                case 2:
+                    medicineManager.viewMedicines();
+                    break;
+                case 3:
+                    prescriptionManager.addPrescription(scanner);
+                    break;
+                case 4:
+                    prescriptionManager.viewPrescriptions();
+                    break;
+                case 5:
+                    userManager.registerUser(scanner);
+                    break;
+                case 6:
+                    userManager.viewUsers();
+                    break;
+                case 7:
+                    System.out.println("Exiting System...");
+                    return;
+                default:
+                    System.out.println("Invalid choice! Try again.");
+            }
+        }
+    }
+}
+
+// Medicine Class
+class Medicine {
+    String name, type;
+    int quantity;
+    String location;
+
+    Medicine(String name, String type, int quantity, String location) {
+        this.name = name;
+        this.type = type;
+        this.quantity = quantity;
+        this.location = location;
+    }
+}
+
+// Medicine Manager
+class MedicineManager {
+    List<Medicine> medicines = new ArrayList<>();
+
+    void addMedicine(Scanner scanner) {
+        System.out.print("Enter Medicine Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter Medicine Type: ");
+        String type = scanner.nextLine();
+        System.out.print("Enter Quantity: ");
+        int quantity = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Enter Location: ");
+        String location = scanner.nextLine();
+
+        medicines.add(new Medicine(name, type, quantity, location));
+        System.out.println("Medicine Added Successfully!");
+    }
+
+    void viewMedicines() {
+        if (medicines.isEmpty()) {
+            System.out.println("No medicines found.");
+            return;
+        }
+        System.out.println("\nAvailable Medicines:");
+        for (Medicine m : medicines) {
+            System.out.println("Name: " + m.name + ", Type: " + m.type + ", Quantity: " + m.quantity + ", Location: " + m.location);
+        }
+    }
+}
+
+// Prescription Class
+class Prescription {
+    String patientName, diagnosis, medication;
+
+    Prescription(String patientName, String diagnosis, String medication) {
+        this.patientName = patientName;
+        this.diagnosis = diagnosis;
+        this.medication = medication;
+    }
+}
+
+// Prescription Manager
+class PrescriptionManager {
+    List<Prescription> prescriptions = new ArrayList<>();
+
+    void addPrescription(Scanner scanner) {
+        System.out.print("Enter Patient Name: ");
+        String patientName = scanner.nextLine();
+        System.out.print("Enter Diagnosis: ");
+        String diagnosis = scanner.nextLine();
+        System.out.print("Enter Medication: ");
+        String medication = scanner.nextLine();
+
+        prescriptions.add(new Prescription(patientName, diagnosis, medication));
+        System.out.println("Prescription Added Successfully!");
+    }
+
+    void viewPrescriptions() {
+        if (prescriptions.isEmpty()) {
+            System.out.println("No prescriptions found.");
+            return;
+        }
+        System.out.println("\nPrescriptions:");
+        for (Prescription p : prescriptions) {
+            System.out.println("Patient: " + p.patientName + ", Diagnosis: " + p.diagnosis + ", Medication: " + p.medication);
+        }
+    }
+}
+
+// User Class
+class User {
+    String username, role;
+
+    User(String username, String role) {
+        this.username = username;
+        this.role = role;
+    }
+}
+
+// User Manager
+class UserManager {
+    List<User> users = new ArrayList<>();
+
+    void registerUser(Scanner scanner) {
+        System.out.print("Enter Username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter Role (Doctor/Pharmacist/Patient): ");
+        String role = scanner.nextLine();
+
+        users.add(new User(username, role));
+        System.out.println("User Registered Successfully!");
+    }
+
+    void viewUsers() {
+        if (users.isEmpty()) {
+            System.out.println("No users found.");
+            return;
+        }
+        System.out.println("\nRegistered Users:");
+        for (User u : users) {
+            System.out.println("Username: " + u.username + ", Role: " + u.role);
+        }
+    }
+}
+
+// Date Utility Class
+class ClientDate {
+    public static Date dt;
+
+    public static String getDate() {
+        dt = new Date();
+        Formatter fmt = new Formatter();
+        fmt.format("%td/%tm/%ty", dt, dt, dt);
+        return fmt.toString();
+    }
+}
